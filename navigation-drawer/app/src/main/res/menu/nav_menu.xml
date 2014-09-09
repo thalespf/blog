@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MenuActivity">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/menu_home_title" />
+
+    <item
+        android:id="@+id/menu_find_people"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_find_people_title"/>
+
+    <item
+        android:id="@+id/menu_photos"
+        android:icon="@drawable/ic_photos"
+        android:title="@string/menu_photos_title"/>
+
+</menu>

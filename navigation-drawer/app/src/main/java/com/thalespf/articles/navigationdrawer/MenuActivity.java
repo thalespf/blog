@@ -38,22 +38,23 @@ public class MenuActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        Log.d("tag", "Mudando fragmento position" + position);
+    public void onNavigationDrawerItemSelected(MenuItem item) {
+        Log.d("MenuActivity", "Menu item selecionado: " + item.getTitle());
         // update the main content by replacing fragments
         Fragment fragment = null;
-        switch (position) {
-            case 0:
+
+        //aqui estamos atualizando o titulo da ActionBar
+        mTitle = item.getTitle();
+
+        switch (item.getItemId()) {
+            case R.id.menu_home:
                 fragment = new HomeFragment();
-                mTitle = getString(R.string.title_section1);
                 break;
-            case 1:
+            case R.id.menu_find_people:
                 fragment = new FindPeopleFragment();
-                mTitle = getString(R.string.title_section2);
                 break;
-            case 2:
+            case R.id.menu_photos:
                 fragment = new PhotosFragment();
-                mTitle = getString(R.string.title_section3);
                 break;
         }
         if (fragment != null) {
@@ -82,7 +83,7 @@ public class MenuActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.menu, menu);
+            getMenuInflater().inflate(R.menu.actionbar_menu, menu);
             restoreActionBar();
             return true;
         }

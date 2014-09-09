@@ -1,16 +1,17 @@
 package com.thalespf.articles.navigationdrawer;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.MenuBuilder;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -56,6 +60,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private int mCurrentSelectedPosition = 0;
     private boolean mUserLearnedDrawer;
+    private ArrayAdapter<MenuItem> adapter;
 
     public NavigationDrawerFragment() {
     }
@@ -95,15 +100,12 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        List<MenuItem> menuItems = createMenu();
+        adapter = new ArrayAdapter<MenuItem>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                });
+                menuItems);
         listView.setAdapter(adapter);
         listView.setItemChecked(mCurrentSelectedPosition, true);
         return listView;
@@ -117,9 +119,21 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+        if (mCallbacks != null && adapter != null) {
+            mCallbacks.onNavigationDrawerItemSelected(adapter.getItem(position));
         }
+    }
+
+    private List<MenuItem> createMenu() {
+        Menu menu = new MenuBuilder(getActivity());
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.nav_menu, menu);
+        List<MenuItem> menuItems = new ArrayList<MenuItem>();
+        for(int i = 0;i < menu.size();i++) {
+            MenuItem item = menu.getItem(i);
+            menuItems.add(item);
+        }
+        return menuItems;
     }
 
     public boolean isDrawerOpen() {
@@ -259,6 +273,6 @@ public class NavigationDrawerFragment extends Fragment {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(MenuItem item);
     }
 }
